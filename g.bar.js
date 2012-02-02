@@ -340,7 +340,6 @@
             covers2.hide();
             covers.show();
             covers.mouseover(fin).mouseout(fout);
-            covers.click(fin);
             return this;
         };
 

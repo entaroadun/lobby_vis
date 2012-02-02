@@ -9,26 +9,37 @@
         <script src="./g.bar.js" type="text/javascript" charset="utf-8"></script>
         <script src="./bills.js" type="text/javascript" charset="utf-8"></script>
         <script type="text/javascript" charset="utf-8">
+	    var xlinkNS="http://www.w3.org/1999/xlink", svgNS="http://www.w3.org/2000/svg";
+	    var popups = [];
             window.onload = function () {
 		for (var i_bill=0; i_bill<10; i_bill++) {
                   var r_bill = Raphael("holder_bill"+i_bill),
                       fin = function () {
-			//alert(this.flag);
-			if ( this.flag.animate ) {
-			  this.flag.animate({opacity: 0}, 1000, function () {this.remove();});
+			for (var i=0; i<popups.length; i++) {
+			  popups[i].animate({opacity: 0}, 200, function () {this.remove();});
 			}
-			var label = BILLS[this.bar.special_id].filings[this.bar.i].name + "\nEstimated total: $" + BILLS[this.bar.special_id].filings[this.bar.i].estim + "\nFilings:\n";
+			var label = BILLS[this.bar.special_id].filings[this.bar.i].name + "\nEstimated total: $" + BILLS[this.bar.special_id].filings[this.bar.i].estim_total + "\nFilings:";
 			for ( var i=0; i<BILLS[this.bar.special_id].filings[this.bar.i].urls.length; i++ ) {
-			  label += "\n"+BILLS[this.bar.special_id].filings[this.bar.i].urls[i];
+			  label += "\n---";
 			}
-			this.flag = r_bill.popup(this.bar.x, this.bar.y, label).insertBefore(this);
+			this.flag = r_bill.popup(this.bar.x, this.bar.y, label).attr({opacity:0.65}).insertBefore(this);
+			for ( var i=0; i<BILLS[this.bar.special_id].filings[this.bar.i].urls.length; i++ ) {
+			  var a = document.createElementNS(svgNS, "a");
+			  a.setAttributeNS(xlinkNS,"href",BILLS[this.bar.special_id].filings[this.bar.i].urls[i].url);
+			  a.textContent = '$'+BILLS[this.bar.special_id].filings[this.bar.i].urls[i].estim;
+			  for (var j=0; j<this.prev.node.childNodes.length; j++) {
+			    if ( this.prev.node.childNodes.item(j).textContent == "---" ) {
+			      this.prev.node.childNodes.item(j).textContent = '';
+			      this.prev.node.childNodes.item(j).appendChild(a);
+			      break;
+			    }
+			  }
+			}
+			popups.push(this.flag);
                       },
-                      fout = function () {
-			  this.flag.animate({opacity: 0}, 1000, function () {this.remove();});
-                      },
-                      txtattr = { font: "12px 'Fontin Sans', Fontin-Sans, sans-serif", width: 1000, href: BILLS[i_bill].url };
+                      txtattr = { font: "13px 'Fontin Sans', Fontin-Sans, sans-serif", width: 1000, href: BILLS[i_bill].url };
                   r_bill.text(600, 10, "Lobbying for "+BILLS[i_bill].text+" (Estimated total: $"+BILLS[i_bill].total+").").attr(txtattr); 
-                  r_bill.barchart(200, 200, 800, 200, [BILLS[i_bill].amounts], {type: "soft"}, i_bill).hover(fin,fout);
+                  r_bill.barchart(200, 200, 800, 200, [BILLS[i_bill].amounts], {type: "soft"}, i_bill).click(fin);
 		}
             };
         </script>
@@ -37,10 +48,8 @@
         <p class="info">
             2011 - Top 10 most lobbied bills with 20 top contributing companies.
 	    <br>
+	    Click on the vertical bars to get more details about lobbying.
 	    <br>
-	    If you are interested how the disclosure looks like copy the FILING_ID to this url:
-	    <br>
-	    http://soprweb.senate.gov/index.cfm?event=getFilingDetails&amp;filingID=XXXX-XXXX-XXXX-XXXX-XXXX
         </p>
         <div class="holder" id="holder_bill0"></div>
         <div class="holder" id="holder_bill1"></div>
