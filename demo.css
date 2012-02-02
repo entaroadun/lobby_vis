@@ -1,0 +1,22 @@
+body {
+    background: #999 url(./bgbg.png);
+    font: 99% "Fontin Sans", Fontin-Sans, "Myriad Pro", "Lucida Grande", "Lucida Sans Unicode", Lucida, Verdana, Helvetica, sans-serif;
+    color: #000;
+    margin: 10px 0 0 0;
+    padding: 0;
+    text-align: center;
+}
+.holder {
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -webkit-box-shadow: 0 1px 3px #666;
+    background: #ddd url(./bg.png);
+    margin: 0 auto;
+    width: 1200px;
+    height: 400px;
+    margin-top: 5px;
+}
+p.info {
+    text-align: center;
+    margin: .5em 2em;
+}
