@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+    <head>
+        <title>gRaphael Dynamic Bar Chart of U.S. Lobby Landscape 2011</title>
+        <link rel="stylesheet" href="./demo.css" type="text/css" media="screen" charset="utf-8">
+        <link rel="stylesheet" href="./demo-print.css" type="text/css" media="print" charset="utf-8">
+        <script src="./raphael-min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./g.raphael.js" type="text/javascript"></script>
+        <script src="./g.bar.js" type="text/javascript" charset="utf-8"></script>
+        <script src="./bills.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" charset="utf-8">
+            window.onload = function () {
+		for (var i_bill=0; i_bill<10; i_bill++) {
+                  var r_bill = Raphael("holder_bill"+i_bill),
+                      fin = function () {
+			//alert(this.flag);
+			if ( this.flag.animate ) {
+			  this.flag.animate({opacity: 0}, 1000, function () {this.remove();});
+			}
+			var label = BILLS[this.bar.special_id].filings[this.bar.i].name + "\nEstimated total: $" + BILLS[this.bar.special_id].filings[this.bar.i].estim + "\nFilings:\n";
+			for ( var i=0; i<BILLS[this.bar.special_id].filings[this.bar.i].urls.length; i++ ) {
+			  label += "\n"+BILLS[this.bar.special_id].filings[this.bar.i].urls[i];
+			}
+			this.flag = r_bill.popup(this.bar.x, this.bar.y, label).insertBefore(this);
+                      },
+                      fout = function () {
+			  this.flag.animate({opacity: 0}, 1000, function () {this.remove();});
+                      },
+                      txtattr = { font: "12px 'Fontin Sans', Fontin-Sans, sans-serif", width: 1000, href: BILLS[i_bill].url };
+                  r_bill.text(600, 10, "Lobbying for "+BILLS[i_bill].text+" (Estimated total: $"+BILLS[i_bill].total+").").attr(txtattr); 
+                  r_bill.barchart(200, 200, 800, 200, [BILLS[i_bill].amounts], {type: "soft"}, i_bill).hover(fin,fout);
+		}
+            };
+        </script>
+    </head>
+    <body class="raphael" id="g.raphael.dmitry.baranovskiy.com">
+        <p class="info">
+            2011 - Top 10 most lobbied bills with 20 top contributing companies.
+	    <br>
+	    <br>
+	    If you are interested how the disclosure looks like copy the FILING_ID to this url:
+	    <br>
+	    http://soprweb.senate.gov/index.cfm?event=getFilingDetails&amp;filingID=XXXX-XXXX-XXXX-XXXX-XXXX
+        </p>
+        <div class="holder" id="holder_bill0"></div>
+        <div class="holder" id="holder_bill1"></div>
+        <div class="holder" id="holder_bill2"></div>
+        <div class="holder" id="holder_bill3"></div>
+        <div class="holder" id="holder_bill4"></div>
+        <div class="holder" id="holder_bill5"></div>
+        <div class="holder" id="holder_bill6"></div>
+        <div class="holder" id="holder_bill7"></div>
+        <div class="holder" id="holder_bill8"></div>
+        <div class="holder" id="holder_bill9"></div>
+        <p class="info">
+            Credits go to: <a href="http://g.raphaeljs.com/">gRaphael JavaScript library</a>, <a href="https://www.popvox.com">POPVOX.COM</a>, <a href="http://disclosures.house.gov/lc/lcsearch.aspx">United States House of Representatives</a>, <a href="http://soprweb.senate.gov/index.cfm?event=chooseFields">United States Senate</a>, and a <a href="https://github.com/entaroadun">GitHub Hacker</a>.
+        </p>
+    </body>
+</html>
