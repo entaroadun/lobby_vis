@@ -20,3 +20,12 @@ p.info {
     text-align: center;
     margin: .5em 2em;
 }
+a {
+  text-decoration: underline;
+}
+svg a:visited {
+  color: white;
+}
+.info a:visited {
+  color: black;
+}
