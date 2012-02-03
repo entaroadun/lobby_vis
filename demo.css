@@ -22,10 +22,8 @@ p.info {
 }
 a {
   text-decoration: underline;
+  color: black;
 }
-svg a:visited {
-  color: white;
-}
-.info a:visited {
+a:visited {
   color: black;
 }
